@@ -15,7 +15,7 @@ class PostRepository extends EntityRepository
 {
     /**
      * @param  int  $page
-     * @param  Tag|null  $tag
+     * @param  Tag $tag
      *
      * @return Paginator
      * @throws Exception
@@ -77,7 +77,7 @@ class PostRepository extends EntityRepository
         $terms = array_unique(explode(' ', $searchQuery));
 
         return array_filter($terms, function ($term) {
-            return 2 <= $term;
+            return 2 <= mb_strlen($term);
         });
     }
 }

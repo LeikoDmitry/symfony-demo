@@ -37,12 +37,21 @@ return [
                     'detail' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route'    => '/:slug',
+                            'route'    => '/[:slug]',
                             'defaults' => [
                                 'action' => 'postShow',
                             ],
                             'constraints' => [
-                                'id' => '^[A-Za-z0-9_-]+$',
+                                'slug' => '[a-z][a-z0-9_-]*',
+                            ],
+                        ],
+                    ],
+                    'search' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/search',
+                            'defaults' => [
+                                'action' => 'search',
                             ],
                         ],
                     ],
@@ -70,6 +79,9 @@ return [
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
+        ],
+        'strategies' => [
+            'ViewJsonStrategy',
         ],
     ],
     'doctrine' => [

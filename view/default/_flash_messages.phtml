@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var Laminas\View\Renderer\PhpRenderer|Laminas\Mvc\Plugin\FlashMessenger\View\HelperTrait $this
  */
@@ -11,8 +12,7 @@ $flash->setMessageOpenFormat('<div%s>
         ->setMessageSeparatorString('</li><li>')
         ->setMessageCloseString('</li></ul></div>');
 
-echo $flash->render('error',   ['alert', 'alert-dismissible', 'alert-danger']);
-echo $flash->render('info',    ['alert', 'alert-dismissible', 'alert-info']);
+echo $flash->render('error', ['alert', 'alert-dismissible', 'alert-danger']);
+echo $flash->render('info', ['alert', 'alert-dismissible', 'alert-info']);
 echo $flash->render('default', ['alert', 'alert-dismissible', 'alert-warning']);
 echo $flash->render('success', ['alert', 'alert-dismissible', 'alert-success']);
-

@@ -3,16 +3,15 @@
 namespace SymfonyDemo\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
-use Twig\Extra\Markdown\DefaultMarkdown;
-use Twig\Extra\Markdown\MarkdownRuntime;
+use Parsedown;
 
 class MarkDown extends AbstractHelper
 {
     /**
-     * @return MarkdownRuntime
+     * @return Parsedown
      */
     public function __invoke()
     {
-        return new MarkdownRuntime(new DefaultMarkdown());
+        return new Parsedown();
     }
 }

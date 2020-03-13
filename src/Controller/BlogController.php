@@ -6,6 +6,7 @@ namespace SymfonyDemo\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
 use SymfonyDemo\Entity\Post;
 use SymfonyDemo\Entity\Tag;
@@ -72,5 +73,43 @@ class BlogController extends AbstractActionController
         return new ViewModel([
             'post' => $post,
         ]);
+    }
+
+    /**
+     * @return ViewModel
+     */
+    public function searchAction(): ViewModel
+    {
+        if (! $this->getRequest()->isXmlHttpRequest()) {
+            return new ViewModel();
+        }
+        $request = $this->getRequest();
+        $query = $request->getQuery('q', '');
+        $limit = $request->getQuery('l', 10);
+        $foundPosts = $this->posts->findBySearchQuery($query, $limit);
+
+        $results = [];
+        foreach (new \ArrayObject($foundPosts) as $post) {
+            $results[] = [
+                'title' => htmlspecialchars(
+                    $post->getTitle(),
+                    ENT_COMPAT | ENT_HTML5
+                ),
+                'date' => $post->getPublishedAt()->format('M d, Y'),
+                'author' => htmlspecialchars(
+                    $post->getAuthor()->getFullName(),
+                    ENT_COMPAT | ENT_HTML5
+                ),
+                'summary' => htmlspecialchars(
+                    $post->getSummary(),
+                    ENT_COMPAT | ENT_HTML5
+                ),
+                'url' => $this->url()->fromRoute(
+                    'blog/detail',
+                    ['slug' => $post->getSlug()]
+                ),
+            ];
+        }
+        return new JsonModel($results);
     }
 }

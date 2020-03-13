@@ -1,58 +1,52 @@
-<?php use SymfonyDemo\Entity\Post; ?>
-<?php if (count($this->paginator)) : ?>
+ <?php
+/**
+ * @var \SymfonyDemo\Entity\Post $post
+ */
+if (count($this->paginator)) : ?>
     <?php foreach ($this->paginator as $post) : ?>
-        <?php
-        /**
-         * @var Post $post
-         */
-        ?>
-
         <article class="post col-12">
             <h2>
-                <a href="<?= $this->url('blog/detail',
-                    ['action' => 'postShow', 'slug' => $post->getSlug()]) ?>">
+                <a href="<?= $this->url(
+                    'blog/detail',
+                    ['action' => 'postShow', 'slug' => $post->getSlug()]
+                ) ?>">
                     <?= $post->getTitle() ?>
                 </a>
             </h2>
-
             <p class="post-metadata">
                 <span class="metadata"><i
-                            class="fa fa-calendar"></i> <?= date_format($post->getPublishedAt(),
-                        'F j, Y, g:i a') ?></span>
+                            class="fa fa-calendar"></i> <?= date_format(
+                                $post->getPublishedAt(),
+                                'F j, Y, g:i a'
+                            ) ?></span>
                 <span class="metadata"><i
                             class="fa fa-user"></i> <?= $post->getAuthor()
-                        ->getFullName() ?></span>
+                            ->getFullName() ?></span>
             </p>
-
             <p><?= $post->getSummary() ?></p>
 
             <?= $this->partial('partial/post_tags.phtml', [
                 'post' => $post,
                 'tag'  => $this->tag
-            ]) ?>
-
+                            ])
+            ?>
         </article>
-
     <?php endforeach; ?>
-<?php else: ?>
-
+<?php else : ?>
     <div class="well">
         <p>Posts not found</p>
     </div>
-
 <?php endif; ?>
-
 <?php if (count($this->paginator)) : ?>
-
     <div class="navigation text-center col-12">
         <?=
-        $this->paginationControl(
-            $this->paginator,
-            'Sliding',
-            'partial/paginator',
-            ['route' => 'blog', 'tag' => $this->tag]
-        );
+            $this->paginationControl(
+                $this->paginator,
+                'Sliding',
+                'partial/paginator',
+                ['route' => 'blog', 'tag' => $this->tag]
+            );
         ?>
     </div>
-
 <?php endif; ?>
+

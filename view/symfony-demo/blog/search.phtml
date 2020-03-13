@@ -1,0 +1,12 @@
+<div id="main" class="col-sm-9">
+    <form action="<?= $this->url('blog/search') ?>" method="GET">
+        <div class="form-group">
+            <input name="q" class="form-control search-field"
+                   placeholder="Search for..."
+                   autocomplete="off" autofocus=""
+                   data-no-results-message="No results found">
+        </div>
+        <ul class="search-preview list-group"></ul>
+    </form>
+    <div id="results"></div>
+</div>
