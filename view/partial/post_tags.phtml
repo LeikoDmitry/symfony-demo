@@ -1,0 +1,10 @@
+<?php if (! empty($this->post->getTags())) : ?>
+    <p class="post-tags">
+        <?php foreach ($this->post->getTags() as $tag) : ?>
+            <a href="<?= sprintf('%s?tag=%s', $this->url('blog'), $tag->getName()) ?>"
+               class="badge badge-<?= is_object($this->tag) && $tag->getName() === $this->tag->getName() ? 'success' : 'secondary'?>">
+                <i class="fa fa-tag"></i> <?= $tag->getName() ?>
+            </a>
+        <?php endforeach; ?>
+    </p>
+<?php endif; ?>

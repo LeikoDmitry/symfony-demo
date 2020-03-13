@@ -1,0 +1,71 @@
+<?php
+/**
+ * @var \SymfonyDemo\Entity\Post $post
+ */
+?>
+<div class="main col-12">
+    <h1><?= $post->getTitle() ?></h1>
+
+    <p class="post-metadata">
+        <span class="metadata"><i
+                    class="fa fa-calendar"></i> <?= date_format($post->getPublishedAt(),
+                'F j, Y, g:i a') ?></span>
+        <span class="metadata"><i
+                    class="fa fa-user"></i> <?= $post->getAuthor()
+                ->getFullName() ?></span>
+    </p>
+
+    <div class="post-content"><?= $this->markdown()->convert($post->getContent()) ?></div>
+
+    <?= $this->partial('partial/post_tags.phtml', [
+        'post' => $post,
+        'tag'  => $this->tag
+    ]) ?>
+
+    <div id="post-add-comment" class="highlight">
+        <?php if ($this->identity()): ?>
+            <!-- Show Comment Form -->
+        <?php else: ?>
+            <a class="btn btn-success" href="<?= $this->url('home') ?>">
+                <i class="fa fa-sign-in" aria-hidden="true"></i>Sign in
+            </a>
+            to publish a comment
+        <?php endif; ?>
+    </div>
+
+    <h3>
+        <i class="fa fa-comments" aria-hidden="true"></i> <?= count($post->getComments()) ?> comments
+    </h3>
+    <?php if (count($post->getComments()) > 0): ?>
+        <?php foreach ($post->getComments() as $comment): ?>
+            <?php
+            /**
+             * @var \SymfonyDemo\Entity\Comment $comment
+             */
+            ?>
+            <div class="row post-comment">
+                <h4 class="col-sm-3">
+                    <strong><?= $comment->getAuthor()->getFullName() ?></strong>
+                    commented on
+                    <strong><?= date_format($comment->getPublishedAt(), 'F j, Y, g:i a') ?></strong>
+                </h4>
+                <div class="col-sm-9">
+                    <?= $this->escapeHtml($comment->getContent()) ?>
+                </div>
+            </div>
+        <?php endforeach ?>
+    <?php else: ?>
+        <div class="post-comment">
+            <p>No comments</p>
+        </div>
+    <?php endif;?>
+
+    <?php if ($this->identity()): ?>
+        <div class="section">
+            <a class="btn btn-lg btn-block btn-success" href="<?php $this->url('home') ?>">
+                <i class="fa fa-edit" aria-hidden="true"></i> Edit Post
+            </a>
+        </div>
+    <?php endif; ?>
+</div>
+
