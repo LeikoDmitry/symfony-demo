@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SymfonyDemo\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;

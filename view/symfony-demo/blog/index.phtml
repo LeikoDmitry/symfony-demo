@@ -37,7 +37,7 @@ if (count($this->paginator)) : ?>
         <p>Posts not found</p>
     </div>
 <?php endif; ?>
-<?php if (count($this->paginator)) : ?>
+<?php if (count($this->paginator)): ?>
     <div class="navigation text-center col-12">
         <?=
             $this->paginationControl(

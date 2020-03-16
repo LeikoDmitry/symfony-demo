@@ -10,6 +10,8 @@ use Laminas\Form\Annotation;
 /**
  * @ORM\Entity(repositoryClass="SymfonyDemo\Repository\UserRepository")
  * @ORM\Table(name="user")
+ * @Annotation\Hydrator("Laminas\Hydrator\ReflectionHydrator")
+ * @Annotation\Name("user")
  */
 class User
 {
@@ -19,6 +21,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Annotation\Exclude()
      */
     private $id;
 
@@ -26,7 +29,6 @@ class User
      * @var string
      *
      * @ORM\Column(type="string")
-     * @Annotation\Required()
      */
     private $fullName;
 
@@ -34,10 +36,7 @@ class User
      * @var string
      *
      * @ORM\Column(type="string", unique=true)
-     * @Annotation\Required()
-     * @Annotation\Validator(
-     *     {"name":"StringLength", "options":{"min":2, "max":50}}
-     *     )
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":3, "max":25}})
      */
     private $username;
 
@@ -53,6 +52,7 @@ class User
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":6, "max":25}})
      */
     private $password;
 
@@ -121,5 +121,16 @@ class User
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
+    }
+
+    /**
+     * @param  User  $user
+     * @param $inputPassword
+     *
+     * @return bool
+     */
+    public static function verifyCredential(User $user, $inputPassword)
+    {
+        return password_verify($inputPassword, $user->getPassword());
     }
 }

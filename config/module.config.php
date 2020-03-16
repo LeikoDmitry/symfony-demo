@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace SymfonyDemo;
 
+use Doctrine\ORM\EntityManager;
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\DBAL\Driver\PDOMySql\Driver;
+use SymfonyDemo\Entity\User;
+use SymfonyDemo\Factory\AuthenticationServiceFactory;
+use SymfonyDemo\Factory\BlogControllerFactory;
+use SymfonyDemo\Factory\SecurityControllerFactory;
 
 return [
     'router' => [
@@ -56,13 +62,42 @@ return [
                         ],
                     ],
                 ],
-            ]
+            ],
+            'login' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/login',
+                    'defaults' => [
+                        'controller' => Controller\SecurityController::class,
+                        'action'     => 'login',
+                    ],
+                ],
+            ],
+            'logout' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/logout',
+                    'defaults' => [
+                        'controller' => Controller\SecurityController::class,
+                        'action'     => 'logout',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'service_manager' => [
+        'aliases' => [
+
+        ],
+        'factories' => [
+            AuthenticationService::class => AuthenticationServiceFactory::class
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\BlogController::class => Factory\BlogControllerFactory::class
+            Controller\SecurityController::class => SecurityControllerFactory::class,
+            Controller\BlogController::class => BlogControllerFactory::class
         ],
     ],
     'view_manager' => [
@@ -109,6 +144,19 @@ return [
                     'password' => getenv('PASSWORD'),
                     'dbname'   => getenv('DATABASE'),
                 ],
+            ],
+        ],
+        'authentication' => [
+            'orm_default' => [
+                'object_manager' => EntityManager::class,
+                'identity_class' => User::class,
+                'identity_property' => 'username',
+                'credential_property' => 'password',
+                'credential_callable' => sprintf(
+                    '%s%s',
+                    __NAMESPACE__,
+                    '\Entity\User::verifyCredential'
+                )
             ],
         ],
     ],

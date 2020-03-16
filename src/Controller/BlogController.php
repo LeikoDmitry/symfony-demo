@@ -81,6 +81,7 @@ class BlogController extends AbstractActionController
     public function searchAction(): ViewModel
     {
         if (! $this->getRequest()->isXmlHttpRequest()) {
+
             return new ViewModel();
         }
         $request = $this->getRequest();
@@ -110,6 +111,7 @@ class BlogController extends AbstractActionController
                 ),
             ];
         }
+
         return new JsonModel($results);
     }
 }
