@@ -6,10 +6,12 @@
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" value="" class="form-control">
+                    <?= $this->formElementErrors()->render($this->form->get('username'), ['class' => 'text-danger']) ?>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" class="form-control">
+                    <?= $this->formElementErrors()->render($this->form->get('password'), ['class' => 'text-danger']) ?>
                 </div>
                 <div class="form-group">
                     <?= $this->formElement($this->form->get('__csrf')) ?>
