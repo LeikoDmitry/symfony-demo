@@ -140,9 +140,9 @@ return [
                 'params' => [
                     'host'     => 'db',
                     'port'     => 3306,
-                    'user'     => getenv('USERNAME'),
+                    'user'     => getenv('USER'),
                     'password' => getenv('PASSWORD'),
-                    'dbname'   => getenv('DATABASE'),
+                    'dbname'   => getenv('DB_NAME'),
                 ],
             ],
         ],
